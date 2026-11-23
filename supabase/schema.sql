@@ -28,6 +28,7 @@ create table if not exists public.content_updates (
   section text not null,
   title text,
   body text,
+  published boolean not null default false,
   published_at timestamptz not null default now()
 );
 
@@ -37,17 +38,10 @@ alter table public.api_waitlist enable row level security;
 alter table public.content_updates enable row level security;
 
 create policy "Public voices are readable"
-  on public.voices for select
-  using (active = true);
-
+  on public.voices for select using (active = true);
 create policy "Published agent demos are readable"
-  on public.agent_demos for select
-  using (published = true);
-
+  on public.agent_demos for select using (published = true);
 create policy "Published content is readable"
-  on public.content_updates for select
-  using (published_at <= now());
-
+  on public.content_updates for select using (published = true and published_at <= now());
 create policy "Anyone can join the API waitlist"
-  on public.api_waitlist for insert
-  with check (true);
+  on public.api_waitlist for insert with check (true);

@@ -1,6 +1,20 @@
 # Sonora
 
-Sonora is an original, open-source AI audio SaaS landing website. It explores expressive voice generation, conversational agents, developer APIs, research, safety and customer stories.
+Sonora is an original open-source audio product prototype with browser-based speech playback and a scripted support-agent demo.
+
+## Working features
+
+- Responsive, accessible landing page
+- Play text through speech voices installed in the visitor’s browser/device
+- Select a local browser voice; audio is not uploaded or saved
+- Scripted FAQ chat demo
+- Developer API example (illustrative, not a live API)
+
+No hosted text-to-speech API, AI model, customer accounts, billing, or production backend is connected yet. Speech quality and available voices depend on the visitor’s device.
+
+## Supabase setup
+
+`supabase/schema.sql` contains the starter data model and row-level access policies. No Supabase project is connected yet. Create a Supabase project, apply the schema, and configure its public project URL and anon key before enabling database-backed features. Never commit a service-role key or database password.
 
 ## Run locally
 
@@ -10,22 +24,10 @@ python -m http.server 4173
 
 Open `http://127.0.0.1:4173`.
 
-## Open-source scope
+## Public preview
 
-- MIT licensed
-- Responsive desktop and mobile interface
-- Interactive voice studio demonstration
-- Voice and conversational-agent previews
-- Developer API code example
-- SEO metadata and social-ready page structure
-- Supabase integration layer prepared in `supabase/schema.sql`
+https://skillhubbysani2050-coder.github.io/sonora-ai/
 
-## Supabase setup
+## License
 
-No Supabase project is currently visible to the connected account. After a project is available, create `voices`, `agent_demos`, `api_waitlist` and `content_updates` tables from `supabase/schema.sql`, then set the public project URL and anonymous key through the hosting provider's environment variables.
-
-Never commit Supabase service-role keys or database passwords.
-
-## Repository
-
-https://github.com/skillhubbysani2050-coder/sonora-ai
+MIT
