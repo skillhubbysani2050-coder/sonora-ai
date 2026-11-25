@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://skillhubbysani2050-coder.github.io/sonora-ai/sitemap.xml
