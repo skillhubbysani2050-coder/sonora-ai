@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f4ef">
+<title>Browser voices vs. a hosted speech API — Sonora guide</title>
+<meta name="description" content="What Sonora's browser voice playback can do, which voices run on your device and which do not, and what a hosted text-to-speech API would add.">
+<link rel="canonical" href="https://skillhubbysani2050-coder.github.io/sonora-ai/guide/">
+<meta property="og:site_name" content="Sonora"><meta property="og:type" content="article"><meta property="og:url" content="https://skillhubbysani2050-coder.github.io/sonora-ai/guide/"><meta property="og:title" content="Browser voices vs. a hosted speech API"><meta property="og:description" content="Which voices in your browser run on your device, which do not, and what a hosted text-to-speech API would add."><meta property="og:image" content="https://skillhubbysani2050-coder.github.io/sonora-ai/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Browser voices vs. a hosted speech API"><meta name="twitter:description" content="Which voices in your browser run on your device, which do not, and what a hosted text-to-speech API would add."><meta name="twitter:image" content="https://skillhubbysani2050-coder.github.io/sonora-ai/og.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Browser voices vs. a hosted speech API","description":"Which voices in a browser run on the device, which are synthesised online, and what a hosted text-to-speech API would add.","datePublished":"2026-11-28","dateModified":"2026-11-28","inLanguage":"en","url":"https://skillhubbysani2050-coder.github.io/sonora-ai/guide/","mainEntityOfPage":{"@type":"WebPage","@id":"https://skillhubbysani2050-coder.github.io/sonora-ai/guide/"},"author":{"@type":"Organization","name":"Sonora","url":"https://skillhubbysani2050-coder.github.io/sonora-ai/"},"publisher":{"@type":"Organization","name":"Sonora","url":"https://skillhubbysani2050-coder.github.io/sonora-ai/"}}</script>
+<style>
+:root{--ink:#171817;--paper:#f5f4ef;--line:#d9d8d1;--muted:#60615d;--purple:#7567df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:0 0 10px 10px;z-index:9;font-weight:700}.skip:focus{top:0}
+.shell{width:min(760px,calc(100% - 40px));margin:auto}
+.nav{height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);width:min(1180px,calc(100% - 48px));margin:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}.mark{width:25px;height:25px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.links{display:flex;gap:24px;font-size:14px}.links a:hover{text-decoration:underline;text-underline-offset:3px}
+main{padding:64px 0 20px}
+.eyebrow{text-transform:uppercase;letter-spacing:1.8px;font-size:11px;font-weight:800;margin:0;color:#777b75}
+h1{font-size:54px;line-height:1.02;letter-spacing:-3px;margin:22px 0 24px}h1 em{font-family:Georgia,serif;font-weight:400}
+.lede{font-size:19px;line-height:1.6;color:var(--muted);max-width:640px;margin:0 0 30px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 52px;padding:0;list-style:none}.toc a{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700}.toc a:hover{background:#fff}
+h2{font-size:30px;letter-spacing:-1.4px;margin:52px 0 14px}h3{font-size:18px;letter-spacing:-.4px;margin:26px 0 8px}
+p,li{line-height:1.65;color:#3b3c39}p{margin:0 0 16px}
+ol,ul{padding-left:22px;margin:0 0 18px}li{margin-bottom:8px}
+.note{border-left:3px solid var(--purple);background:#fff;border-radius:0 12px 12px 0;padding:18px 20px;margin:22px 0}.note p:last-child{margin-bottom:0}
+.table-wrap{overflow-x:auto;margin:20px 0 24px;border:1px solid var(--line);border-radius:14px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid #eceae3;vertical-align:top}
+thead th{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#777b75;background:#faf9f4}
+tbody tr:last-child td{border-bottom:0}td:first-child{font-weight:700;width:34%}
+code{background:#ecebe5;border-radius:5px;padding:2px 5px;font-size:13px}
+.try{border:1px solid var(--line);border-radius:16px;padding:24px;margin:26px 0;background:#fff}
+.cta{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;margin:8px 0 0}
+footer{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 40px;font-size:12px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;width:min(1180px,calc(100% - 48px));margin-left:auto;margin-right:auto;color:#6f706b}
+footer a:hover{text-decoration:underline;text-underline-offset:2px}
+@media(max-width:620px){.nav{width:calc(100% - 28px)}.links{gap:16px;font-size:13px}.shell{width:calc(100% - 28px)}main{padding:40px 0 10px}h1{font-size:38px;letter-spacing:-2px}h2{font-size:25px}.lede{font-size:17px}footer{width:calc(100% - 28px);flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><a class="brand" href="../" aria-label="Sonora home"><span class="mark">S</span><span>SONORA</span></a><nav class="links" aria-label="Site"><a href="../#studio">Studio</a><a href="../#faq">FAQ</a><a href="../">Home</a></nav></header>
+<main id="main" tabindex="-1" class="shell">
+<p class="eyebrow">Guide · 28 Nov 2026 · 4 min read</p>
+<h1>Your browser already has voices.<br><em>Here is where they stop.</em></h1>
+<p class="lede">Sonora plays speech with voices that are already installed on your device. That keeps the prototype simple and cheap to run, but it also means the quality, the language and even the privacy of a sentence depend on your machine and browser, not on Sonora. This page explains what actually happens, which voices are not local, and what a hosted speech API would add.</p>
+<ul class="toc"><li><a href="#play">Press play</a></li><li><a href="#local">Which voices are local</a></li><li><a href="#limits">What the browser cannot do</a></li><li><a href="#hosted">What an API adds</a></li><li><a href="#today">Where Sonora stands</a></li></ul>
+
+<h2 id="play">What happens when you press play</h2>
+<p>Three things, in this order:</p>
+<ol>
+<li>Your text goes into the browser's built-in speech engine, the Web Speech API. On the page that is the <code>speechSynthesis</code> object.</li>
+<li>The browser asks the operating system for a voice. Windows, macOS, iOS, Android and most Linux desktops each ship their own set, so the list differs from machine to machine.</li>
+<li>That voice renders the sentence and the browser plays it through your speakers.</li>
+</ol>
+<p>Sonora has no server in this path. It never receives your text, and nothing is stored, because there is nowhere to store it yet.</p>
+<div class="note"><p><strong>One exception matters.</strong> Not every voice in that list is local. Some are synthesised online by the browser maker and only played back in the page.</p></div>
+
+<h2 id="local">Which voices are local, and which are not</h2>
+<p>Names differ by platform and change between versions, but the pattern is fairly consistent:</p>
+<h3>Usually runs on your device</h3>
+<ul><li>Microsoft voices on Windows (David, Zira, Mark and the newer natural voices once downloaded)</li><li>Apple voices on macOS and iOS (Samantha, Daniel, Karen, and any "Enhanced" or "Premium" voice you installed)</li><li>eSpeak or speech-dispatcher voices on Linux</li></ul>
+<h3>Usually synthesised online</h3>
+<ul><li>Voices whose name starts with "Google" in Chrome — the text is sent to Google to be turned into speech</li><li>The online "Natural" voices in Microsoft Edge</li><li>Some cloud voices on Android, depending on the speech engine the phone ships with</li></ul>
+<p>Labels are not a guarantee, so test it directly: turn off Wi-Fi and mobile data, then press play in the studio. A local voice keeps speaking. An online voice fails or falls back to a robotic one.</p>
+
+<h2 id="limits">What the browser cannot do</h2>
+<ul>
+<li><strong>No downloadable audio.</strong> The browser plays speech; it does not hand you an MP3. There is no supported way to capture the output of <code>speechSynthesis</code>.</li>
+<li><strong>No SSML.</strong> You get rate, pitch, volume and language. You cannot ask for a pause, an emphasis or a pronunciation the way a hosted API lets you.</li>
+<li><strong>No word timings.</strong> Nothing tells you when each word is spoken, so captions and lip-sync are guesswork.</li>
+<li><strong>The voice list is the visitor's, not yours.</strong> A voice that sounds good on your laptop may not exist on a visitor's phone, so the same page sounds different to every person.</li>
+<li><strong>Mobile browsers need a tap first.</strong> On iOS, speech cannot start without a user gesture, so nothing can play on page load.</li>
+<li><strong>Long text can be cut off.</strong> Some browsers stop after a while or drop the queue; splitting long passages into sentences is the usual workaround.</li>
+</ul>
+
+<h2 id="hosted">What a hosted speech API would add</h2>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Job</th><th scope="col">Browser voices</th><th scope="col">Hosted API</th></tr></thead>
+<tbody>
+<tr><td>Same voice on every device</td><td>No — depends on the visitor's OS</td><td>Yes, by voice ID</td></tr>
+<tr><td>Consistent quality</td><td>Varies widely</td><td>Fixed model, fixed output</td></tr>
+<tr><td>Direction and emphasis</td><td>Rate, pitch, volume only</td><td>Usually SSML and style controls</td></tr>
+<tr><td>Word-level timings</td><td>No</td><td>Often included</td></tr>
+<tr><td>Downloadable audio files</td><td>No</td><td>Yes</td></tr>
+<tr><td>Language coverage</td><td>Whatever the device installed</td><td>The provider's catalogue</td></tr>
+<tr><td>Cost</td><td>Free, on the visitor's machine</td><td>Per character or per minute</td></tr>
+<tr><td>Where your text goes</td><td>Usually your device; sometimes the browser maker</td><td>The provider's servers</td></tr>
+<tr><td>Setup</td><td>None</td><td>Key, server, billing, rate limits</td></tr>
+</tbody></table></div>
+<p>That trade is the whole decision. A hosted API buys consistency and control, and pays for it in money, latency and a new place where text exists. For a prototype with no accounts and no billing, the browser's own voices are the honest default: they work today, they cost nothing, and nobody has to trust a backend that does not exist yet.</p>
+<p>Offering hosted voices later would mean more than adding a key to a page: a provider agreement, a server that holds the key so it never reaches the browser, usage metering so one visitor cannot run up the bill, per-voice licensing, and limits against abuse.</p>
+
+<h2 id="today">Where Sonora stands</h2>
+<p>Right now the studio plays text with your device's voices, the assistant in the agent card is scripted rather than a live model, and the Python snippet is illustrative — there is no hosted Sonora API to call. The <a href="../#faq" style="text-decoration:underline;text-underline-offset:3px">FAQ</a> says the same thing in shorter form, and the <a href="../#notes" style="text-decoration:underline;text-underline-offset:3px">What's new log</a> records each change to the page.</p>
+<div class="try"><h3 style="margin-top:0">Check your own device in a minute</h3>
+<ol style="margin-bottom:0">
+<li>Open the <a href="../#studio" style="text-decoration:underline;text-underline-offset:3px">studio</a> and look at the voice menu.</li>
+<li>Note which names start with "Google" or say "Online" or "Natural".</li>
+<li>Turn off Wi-Fi and mobile data, then press play.</li>
+<li>If the voice still speaks, it lives on your device. If it stops, it was coming from the network.</li>
+</ol></div>
+<a class="cta" href="../#studio">Try the prototype →</a>
+</main>
+<footer><a class="brand" href="../" aria-label="Sonora home"><span class="mark">S</span><span>SONORA</span></a><span><a href="../">Home</a> · <a href="../#faq">FAQ</a> · <a href="../#notes">What's new</a></span><span>© 2026 Sonora Labs</span></footer>
+</body>
+</html>
